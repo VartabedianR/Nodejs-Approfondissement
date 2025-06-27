@@ -3,6 +3,7 @@ const UnauthorizedError = require("../../errors/unauthorized");
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
 const usersService = require("./users.service");
+const articleService = require("../articles/articles.service");
 
 class UsersController {
   async getAll(req, res, next) {
@@ -69,6 +70,24 @@ class UsersController {
       res.json({
         token,
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Ici, afficher tous les articles publics d'un user
+  async getUserArticles(req, res, next) {
+    try {
+      const userId = req.params.userId;
+      const articles = await articleService.getArticlesByUser(userId);
+      if (!articles|| articles.length === 0) {
+        return res.status(404).json({
+          message: "Aucun article trouvé pour cet utilisateur."
+        });
+      }
+      // L'user est dans le champ user des articles (populate)
+      const user = articles[0].user;
+      res.json({ user, articles });
     } catch (err) {
       next(err);
     }

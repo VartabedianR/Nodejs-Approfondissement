@@ -24,8 +24,18 @@ async function deleteArticle(articleId) {
     return await Article.findByIdAndDelete(articleId);
 }
 
+// Ici, récupération de tous les articles d'un utilisateur avec les infos (sans le mdp)
+async function getArticlesByUser(userId) {
+    return Article.find({ user: userId })
+        .populate({
+            path: 'user',
+            select:'-password'
+        });
+}
+
 module.exports = {
     createArticle,
     updateArticle,
     deleteArticle,
+    getArticlesByUser
 };
