@@ -5,7 +5,6 @@ module.exports = {
       script: "./www/app.js",
       max_memory_restart: "200M", // Limite de mémoire
       error_file: "./logs/err.log", // Fichier Log des erreurs
-      out_file: "./logs/out.log", 
       env_production: {
         NODE_ENV: "production",
       },
